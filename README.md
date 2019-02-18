@@ -1,3 +1,5 @@
+# source{d} Engine
+
 <a href="https://www.sourced.tech/engine">
   <img src="docs/sourced-engine.png" alt="source{d} Engine" height="120px" />
 </a>
@@ -242,7 +244,6 @@ To see which languages are available, check the table of [supported languages](#
 
 If you want a playground to see examples of the UAST, or run your own, you can launch the [parse web client](https://github.com/bblfsh/web).
 
-
 ```bash
 # Launch the parse web client
 srcd web parse
@@ -274,7 +275,7 @@ srcd parse drivers
 
 ### 5. Start Executing Queries
 
-**Understand which tables are available for you to query:**
+**Understand which tables are available to you to query:**
 
 ```bash
 gitbase> show tables;
