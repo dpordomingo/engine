@@ -1,5 +1,3 @@
-# source{d} Engine
-
 <a href="https://www.sourced.tech/engine">
   <img src="docs/sourced-engine.png" alt="source{d} Engine" height="120px" />
 </a>
@@ -275,7 +273,7 @@ srcd parse drivers
 
 ### 5. Start Executing Queries
 
-**Understand which tables are available to you to query:**
+**Understand which tables are available for you to query:**
 
 ```bash
 gitbase> show tables;
