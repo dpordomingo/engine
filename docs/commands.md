@@ -1,4 +1,4 @@
-# List of commands
+# List of Commands
 
 This is a list of the commands that have been planned and whether
 they've been implemented.
@@ -27,6 +27,7 @@ No action associated to this.
   * `-v|--verbose`: verbose mode on, log everything.
   * `--config`: path to the config file.
 
+### config
 The config file is optional. By default `srcd` will look for it in `$HOME/.srcd/config.yml`. You can use a YAML file to configure the public port bindings of the components containers.
 
 Example config file with the default values:
@@ -65,7 +66,7 @@ directory if none is given.
 
 ## srcd stop
 
-Stops all containers used by the source{d} Engine.
+Stops all containers used by source{d} Engine.
 
 *arguments*: N/A
 
@@ -73,12 +74,12 @@ Stops all containers used by the source{d} Engine.
 
 ## srcd prune
 
-Removes all containers and docker volumes used by the source{d} engine.
+Removes all containers and Docker volumes used by source{d} Engine.
 
 *arguments*: N/A
 
 *flags*:
-  * `--with-images`: remove docker images too
+  * `--with-images`: remove Docker images too
 
 ## srcd version
 Shows the version of the current `srcd` cli binary, as well as the one for
@@ -144,10 +145,10 @@ Opens a gitbase web client.
 
 ## srcd components
 The sub commands under `srcd components` provide management to pre-install,
-remove, and update the components associated to the source{d} Engine.
+remove, and update the components associated to source{d} Engine.
 
 For instance, `bblfsh` and `gitbase` are some of these components.
-More will be coming soon. One of them could easily be the Spark engine with
+More will be coming soon. One of them could easily be the Spark Engine with
 Jupyter.
 
 

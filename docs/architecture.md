@@ -12,6 +12,7 @@ the only dependency.
 
 You can find more information on this [Design Document](https://docs.google.com/document/d/1Fw-qE8mC3lZUP5hoH1Jo5bYcGV0Z018uAq7er3oAMLw/edit?pli=1#).
 
+
 ## Philosophy
 
 A note on the philosophy of the project seems adequate at
@@ -21,14 +22,16 @@ Therefore we are trying to minimize the interaction needed
 to accomplish most use cases.
 
 For instance, in order to parse a Go file and obtain its
-UAST the normal flow was:
+UAST the normal flow would be:
 
 1. install bblfsh
 2. install the Go driver for bblfsh
 3. send a gRPC request or use the bblfsh SDK
 
-Once source{d} Engine is completed this will simply be
-`srcd parse uast main.go`.
+Using source{d} Engine, it can be done running:
+```shell
+srcd parse uast main.go
+```
 
 For a full list of the commands supported or planned, see [commands.md](commands.md).
 
@@ -37,14 +40,14 @@ performed by Engine.
 
 ## Technical Architecture
 
-<img src="./architecture-diagram.png" height="150" />
+<img src="./assets/architecture-diagram.png" height="150" />
 
 The whole architecture is based on a single CLI binary
 written in Go named [srcd](../cmd/srcd/main.go) and an orchestrating
 daemon running inside of Docker itself named
 [srcd-server](../cmd/srcd-server/main.go).
 
-### the srcd binary
+### The srcd Binary
 
 The `srcd` binary is the user's main interaction mechanism
 with the source{d} Engine. It is also the only piece (other
@@ -61,22 +64,21 @@ Whenever the `srcd` command is invoked it will verify that
 `srcd-server` is indeed running and, if not, it will start it.
 This might required downloading a Docker image.
 
-### gRPC streaming for logs
+### gRPC Streaming for Logs
 
-In order to provide a better view of what's going on on the backend
-some of the longer running operations, such as parsing a UAST since
-it might required installing drivers, come with a `WithLogs` version
+In order to provide a better view of what's going on on the backend,
+some of the longer running operations &mdash;such as parsing a UAST or slow queries&mdash;, come with a `WithLogs` version
 of the gRPC service.
 
 This operation streams all of the logs from the daemon to the CLI so
 they can be logged to the user when requested. You can try this by
 parsing any file while the `--verbose`/`-v` flag is set.
 
-### the srcd-server daemon
+### The srcd-server Daemon
 
 The `srcd-server` daemon is a `gRPC` server always running in
 a Docker container that provides orchestration of all of the
-other components of the source{d} tech suite.
+other components of source{d} Engine.
 
 This daemon is started automatically by invoking the `srcd`
 binary described above. It is responsible for downloading and
@@ -85,17 +87,16 @@ requests received.
 
 For instance if a request arrives to obtain the UAST given a
 Go program, the daemon will check whether `bblfsh` is already
-running and whether the driver corresponding to the given file
-is installed.
+running and whether the file language is supported by the available `bblfsh` service.
 If any of these is missing, `srcd-server` is responsible for
 fixing the situation without further interaction from the user.
 
-#### docker set up
+#### Docker Set Up
 
 In order to make this work in the easiest way a couple of design
 decisions have been made:
 
-##### docker in docker
+##### Docker in Docker
 
 In order to provide access to the `srcd-server` process to the Docker
 API, we mount the Docker socket `/var/run/docker.sock`. This means
@@ -103,13 +104,13 @@ that whenever `srcd-server` creates a new container this one will be
 not a *child* but a *sibling* container, running on the same Docker
 host as `srcd-server` itself.
 
-##### docker naming
+##### Docker Naming
 
-All of the docker containers started by either `srcd` or `srcd-server`
+All of the Docker containers started by either `srcd` or `srcd-server`
 have a named prefixed with `srcd-cli`. For instance `srcd-server` will
-run as `srcd-cli-daemon`, `gitbase` will be `srcd-cli-gitbase`, etc.
+run as `srcd-cli-daemon`, `gitbase` will run inside `srcd-cli-gitbase`, etc.
 
-##### docker networking
+##### Docker Networking
 
 In order to provide communication between the multiple containers started,
 for instance letting `gitbase` access `bblfsh`, a single bridge network
@@ -119,4 +120,4 @@ This allows `gitbase`, for instance, to access `bblfsh` by using the TCP
 address `srcd-cli-bblfshd:9432`, since Docker provides DNS entries with
 the container name.
 
-Components can be also accessed from the outside, for instance, to query `gitbase` with a supported mysql client. Here is the [list of the exposed ports, and its default values](commands.md#srcd).
+Components can be also accessed from the outside, for instance, to query `gitbase` with a supported mysql client. Here is the [list of the exposed ports, and its default values](commands.md#config).
