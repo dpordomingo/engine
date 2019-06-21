@@ -9,6 +9,7 @@
 ## Learn More
 
 * [Contribute](CONTRIBUTING.md)
+* [Changelog](../CHANGELOG.md)
 * [License](../NOTICE.md)
 
 ### Resources

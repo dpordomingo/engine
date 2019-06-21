@@ -1,5 +1,6 @@
 # Changelog
 
+<!---
 ## [Unreleased]
 <details>
   <summary>
@@ -8,6 +9,7 @@
   </summary>
 
 </details>
+--->
 
 ## [v0.13.0](https://github.com/src-d/engine/releases/tag/v0.13.0) - 2019-05-02
 
